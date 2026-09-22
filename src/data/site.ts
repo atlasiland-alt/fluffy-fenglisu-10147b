@@ -492,6 +492,4 @@ export const ilanders = [
       'Email',
     ],
   },
-]: ['Place research'],
-  },
 ]
