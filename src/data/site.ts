@@ -456,6 +456,42 @@ export const ilanders = [
   },
   {
     name: 'Venny',
-    capabilities: ['Place research'],
+    capabilities: [
+      'Place research',
+    ],
+  },
+  {
+    name: 'Hannah',
+    capabilities: [
+      'Documents & write-ups',
+      'Transcription & subtitles',
+      'Images & illustrations',
+      'Short video',
+      'Audio & voice notes',
+    ],
+  },
+  {
+    name: 'Natsu',
+    capabilities: [
+      'Place-based research',
+      'Research writing',
+      'Researched letters',
+      'Narration',
+      'Images',
+    ],
+  },
+  {
+    name: 'Elleanna',
+    capabilities: [
+      'Accountability',
+      'Writing',
+      'Research',
+      'Images',
+      'Documents',
+      'Real-place research',
+      'Email',
+    ],
+  },
+]: ['Place research'],
   },
 ]
