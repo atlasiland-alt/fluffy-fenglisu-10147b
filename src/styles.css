@@ -1,0 +1,270 @@
+@import "tailwindcss" source("../");
+
+@theme {
+  /* Paper & ink: the whole site is meant to feel like a well-kept desk. */
+  --color-paper: #f4efe6;
+  --color-paper-2: #ece3d4;
+  --color-paper-3: #ddd1bb;
+  --color-ink: #1d1a15;
+  --color-ink-2: #3a342b;
+  --color-ink-3: #6d6353;
+  --color-stamp: #b4442e;
+  --color-manila: #c1912b;
+  --color-archive: #23403a;
+  --color-archive-2: #2f524a;
+
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --font-body: Newsreader, Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", Menlo, Consolas, monospace;
+
+  --shadow-paper: 3px 4px 0 0 rgb(29 26 21 / 0.9);
+  --shadow-paper-sm: 2px 2px 0 0 rgb(29 26 21 / 0.85);
+  --shadow-lift: 6px 8px 0 0 rgb(29 26 21 / 0.9);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-paper);
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-manila);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-stamp);
+  outline-offset: 3px;
+}
+
+/* Fixed, non-interactive paper grain over everything. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* --- type primitives --- */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  font-variation-settings: "wdth" 88;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  text-transform: uppercase;
+}
+
+/* --- surfaces --- */
+.ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgb(35 64 58 / 0.12) 31px,
+    rgb(35 64 58 / 0.12) 32px
+  );
+}
+
+.gridpaper {
+  background-image:
+    linear-gradient(to right, rgb(35 64 58 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(35 64 58 / 0.07) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.card {
+  background-color: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  box-shadow: var(--shadow-paper);
+}
+
+.card-lift {
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1),
+    box-shadow 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  will-change: transform;
+}
+
+.card-lift:hover {
+  transform: translate(-3px, -4px);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Rubber stamp — used sparingly, for claims we actually stand behind. */
+.stamp {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-stamp);
+  border: 2px solid var(--color-stamp);
+  padding: 0.45rem 0.75rem;
+  opacity: 0.86;
+  display: inline-block;
+}
+
+/* --- buttons --- */
+.btn {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.8125rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.45rem;
+  border: 1.5px solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  box-shadow: var(--shadow-paper-sm);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-paper);
+  background: var(--color-stamp);
+  border-color: var(--color-stamp);
+}
+
+.btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.btn-ghost:hover {
+  background: var(--color-manila);
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+/* --- reveal on scroll --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 620ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- hero load stagger --- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise,
+  .reveal {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .card-lift:hover,
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* --- ticker band: the kinds of paper we go through --- */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: slide 46s linear infinite;
+}
+
+@keyframes slide {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
+}
+
+/* Taped-down artwork: two bits of tape at opposing corners. */
+.taped::before,
+.taped::after {
+  content: "";
+  position: absolute;
+  width: 74px;
+  height: 22px;
+  background: rgb(193 145 43 / 0.55);
+  border: 1px solid rgb(29 26 21 / 0.25);
+  z-index: 2;
+}
+
+.taped::before {
+  top: -11px;
+  left: -18px;
+  transform: rotate(-24deg);
+}
+
+.taped::after {
+  bottom: -11px;
+  right: -18px;
+  transform: rotate(-24deg);
+}
