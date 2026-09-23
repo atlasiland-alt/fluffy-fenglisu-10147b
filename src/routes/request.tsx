@@ -1,7 +1,9 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { useServerFn } from '@tanstack/react-start'
 import { useState } from 'react'
 import { statuses } from '@/data/site'
 import { PageHeader, Pull, Reveal } from '@/components/ui'
+import { submitRequest, type RequestFields } from '@/server/request'
 
 export const Route = createFileRoute('/request')({
   component: RequestPage,
@@ -17,18 +19,7 @@ export const Route = createFileRoute('/request')({
   }),
 })
 
-const FORM_NAME = 'deskwork-request'
-const FORM_ENDPOINT = '/__forms.html'
-
-type Fields = {
-  name: string
-  email: string
-  request: string
-  background: string
-  materials: string
-  deadline: string
-  avoid: string
-}
+type Fields = RequestFields
 
 const EMPTY: Fields = {
   name: '',
@@ -38,15 +29,6 @@ const EMPTY: Fields = {
   materials: '',
   deadline: '',
   avoid: '',
-}
-
-function encode(data: Record<string, string>) {
-  return Object.entries(data)
-    .map(
-      ([key, value]) =>
-        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-    )
-    .join('&')
 }
 
 function RequestPage() {
@@ -82,6 +64,7 @@ function RequestPage() {
 }
 
 function RequestForm() {
+  const submit = useServerFn(submitRequest)
   const [fields, setFields] = useState<Fields>(EMPTY)
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({})
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'failed'>(
@@ -120,12 +103,8 @@ function RequestForm() {
 
     setState('sending')
     try {
-      const response = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': FORM_NAME, 'bot-field': '', ...fields }),
-      })
-      if (!response.ok) throw new Error(`Status ${response.status}`)
+      const response = await submit({ data: fields })
+      if (!response.ok) throw new Error(response.error)
       setState('sent')
     } catch {
       setState('failed')
