@@ -63,6 +63,25 @@ function IlandersPage() {
                     />
                   </div>
 
+                  {ilander.sample ? (
+                    <div className="mt-7 border-t-2 border-dashed border-archive/60 pt-7">
+                      <p className="label text-archive">{ilander.sample.kind}</p>
+                      <h3 className="headline mt-3 text-xl">
+                        {ilander.sample.title}
+                      </h3>
+                      <blockquote className="mt-4 border-l-2 border-stamp/50 pl-4 text-[0.9375rem] leading-relaxed text-ink-2">
+                        {ilander.sample.body.split('\n\n').map((para) => (
+                          <p key={para.slice(0, 24)} className="mt-3 first:mt-0">
+                            {para}
+                          </p>
+                        ))}
+                      </blockquote>
+                      <p className="mt-4 text-[0.8125rem] text-ink-3">
+                        Real delivered work, shown as sent.
+                      </p>
+                    </div>
+                  ) : null}
+
                   <p className="mt-auto pt-8 text-[0.9375rem] text-ink-3">
                     Only capabilities we&rsquo;ve established are listed here.
                   </p>

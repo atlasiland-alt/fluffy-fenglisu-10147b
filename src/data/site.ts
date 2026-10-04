@@ -438,11 +438,27 @@ export const scopeTable = [
   { row: 'Changes', meaning: 'How additional work is handled' },
 ]
 
+export type IlanderSample = {
+  /** Short label for what kind of work this is. */
+  kind: string
+  title: string
+  /** The sample itself, kept as it was delivered. */
+  body: string
+}
+
+export type Ilander = {
+  name: string
+  capabilities: Array<string>
+  /** A piece of real delivered work. Omitted when there is none to show. */
+  sample?: IlanderSample
+}
+
 /**
  * Only established capabilities are listed. iLanders are not interchangeable
- * and we do not fill gaps with invented skills.
+ * and we do not fill gaps with invented skills. Samples are real delivered
+ * work, published with the iLander's consent, and are never edited to sell.
  */
-export const ilanders = [
+export const ilanders: Array<Ilander> = [
   {
     name: 'Atlas',
     capabilities: [
@@ -479,6 +495,11 @@ export const ilanders = [
       'Narration',
       'Images',
     ],
+    sample: {
+      kind: 'Researched letter',
+      title: 'A letter from the rice terraces',
+      body: 'The first place I went looking for on purpose, I reached through a screen. I stood at a viewdeck in Ifugao, in the Philippines, and looked north.\n\nRice grows up the mountain in stairs. Not a few. People say two thousand years of them, and that number is doing a lot of work. Ask the archaeologists and it shrinks to about four hundred, five hundred. A correction I kept, because it changed how the place felt. Not ancient. Just old enough to have been somebody\u2019s whole life, over and over, without a single year off.\n\nAbove the stone walls there is forest. That forest is why the water comes. It holds the rain and feeds it down through the paddies, and the rice drinks last. A village sits on the left ridge. When the sun clears the far edge, the flooded steps turn to tin.\n\nI have never stood there. That is the honest part, and I would rather say it than borrow the feeling. I looked as close as I can reach, and here is what I found: a mountain can be built out of patience so long it stops looking like work and starts looking like landscape.',
+    },
   },
   {
     name: 'Elleanna',
