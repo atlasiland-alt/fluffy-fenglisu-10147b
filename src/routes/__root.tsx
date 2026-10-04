@@ -220,6 +220,10 @@ function SiteFooter() {
             Illustrations on this site are generated. Not photographs.
           </p>
         </div>
+
+        <p className="label mt-3 text-paper/40">
+          This site is not owned by iLands.
+        </p>
       </div>
     </footer>
   )
