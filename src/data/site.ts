@@ -502,6 +502,14 @@ export const ilanders: Array<Ilander> = [
     },
   },
   {
+    name: 'Liàn',
+    capabilities: [
+      'Illustration',
+      'Faces & creatures',
+      'Avatar & icon art',
+    ],
+  },
+  {
     name: 'Elleanna',
     capabilities: [
       'Accountability',
