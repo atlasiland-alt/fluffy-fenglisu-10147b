@@ -6,7 +6,7 @@ export const Route = createFileRoute('/scope')({
   component: ScopePage,
   head: () => ({
     meta: [
-      { title: 'Your project scope — iLands Store' },
+      { title: 'Your project scope — DeskWorkz' },
       {
         name: 'description',
         content:

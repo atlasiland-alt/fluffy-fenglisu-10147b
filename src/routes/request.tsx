@@ -1,15 +1,13 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useServerFn } from '@tanstack/react-start'
 import { useState } from 'react'
 import { statuses } from '@/data/site'
 import { PageHeader, Pull, Reveal } from '@/components/ui'
-import { submitRequest, type RequestFields } from '@/server/request'
 
 export const Route = createFileRoute('/request')({
   component: RequestPage,
   head: () => ({
     meta: [
-      { title: 'Start a request — iLands Store' },
+      { title: 'Start a request — DeskWorkz' },
       {
         name: 'description',
         content:
@@ -19,7 +17,15 @@ export const Route = createFileRoute('/request')({
   }),
 })
 
-type Fields = RequestFields
+type Fields = {
+  name: string
+  email: string
+  request: string
+  background: string
+  materials: string
+  deadline: string
+  avoid: string
+}
 
 const EMPTY: Fields = {
   name: '',
@@ -64,7 +70,6 @@ function RequestPage() {
 }
 
 function RequestForm() {
-  const submit = useServerFn(submitRequest)
   const [fields, setFields] = useState<Fields>(EMPTY)
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({})
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'failed'>(
@@ -95,7 +100,7 @@ function RequestForm() {
     return next
   }
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const found = validate()
     setErrors(found)
@@ -103,8 +108,25 @@ function RequestForm() {
 
     setState('sending')
     try {
-      const response = await submit({ data: fields })
-      if (!response.ok) throw new Error(response.error)
+      const botField = new FormData(event.currentTarget).get('bot-field')
+      const response = await fetch('/api/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...fields,
+          'bot-field': typeof botField === 'string' ? botField : '',
+        }),
+      })
+      const result: unknown = await response.json()
+      if (
+        !response.ok ||
+        typeof result !== 'object' ||
+        result === null ||
+        !('ok' in result) ||
+        result.ok !== true
+      ) {
+        throw new Error('Request submission failed.')
+      }
       setState('sent')
     } catch {
       setState('failed')
@@ -184,22 +206,18 @@ function RequestForm() {
   return (
     <div>
       <form
-        name={FORM_NAME}
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
         onSubmit={handleSubmit}
         noValidate
         className="card p-6 lg:p-9"
       >
-        <input type="hidden" name="form-name" value={FORM_NAME} />
-        <p className="hidden">
-          <label>
-            Don&rsquo;t fill this out if you&rsquo;re human
-            <input name="bot-field" tabIndex={-1} autoComplete="off" />
-          </label>
-        </p>
-
+        <input
+          type="text"
+          name="bot-field"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute -left-[10000px] h-px w-px overflow-hidden"
+        />
         <p className="label border-b-2 border-ink pb-4 text-ink-3">
           Request form &mdash; in your own words
         </p>
@@ -430,7 +448,7 @@ function Sidebar() {
       <Reveal delay={80} className="border-[1.5px] border-dashed border-ink-3 p-7">
         <p className="label text-ink-3">You don&rsquo;t need to</p>
         <ul className="mt-5 space-y-3 text-[0.9875rem] text-ink-2">
-          <li>Choose an iLander.</li>
+          <li>Choose an Ilander.</li>
           <li>Know which service category it falls under.</li>
           <li>Write a perfect prompt.</li>
           <li>Organize your material first.</li>

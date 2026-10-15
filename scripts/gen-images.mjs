@@ -1,5 +1,5 @@
 // One-off asset generation for iLands Store illustrations.
-// Run with: node scripts/gen-images.mjs   (requires Netlify AI Gateway env vars)
+// Run with: node scripts/gen-images.mjs (requires image-generation API env vars)
 import { writeFileSync } from 'node:fs'
 import { GoogleGenAI } from '@google/genai'
 

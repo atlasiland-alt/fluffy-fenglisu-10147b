@@ -1,9 +1,31 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
+import type { IlanderLink } from '@/data/site'
 
-/** Serve generated artwork through the Netlify Image CDN, never the raw PNG. */
-export function cdn(src: string, w: number, format = 'webp') {
-  return `/.netlify/images?url=${encodeURIComponent(src)}&w=${w}&fm=${format}`
+/** Return the local generated-artwork path from `public/img/`. */
+export function cdn(src: string, _w: number) {
+  return src
+}
+
+export function IlanderLinks({ links }: { links: Array<IlanderLink> }) {
+  if (links.length === 0) return null
+
+  return (
+    <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+      {links.map((link) => (
+        <li key={`${link.label}-${link.href}`}>
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noreferrer"
+            className="label text-stamp underline decoration-dotted underline-offset-4 hover:text-ink"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
 }
 
 export function Illustration({
@@ -50,6 +72,9 @@ export function Reveal({
   as?: 'div' | 'li' | 'section' | 'article'
 }) {
   const ref = useRef<HTMLElement | null>(null)
+  const setRef = useCallback((element: HTMLElement | null) => {
+    ref.current = element
+  }, [])
   const [shown, setShown] = useState(false)
 
   useEffect(() => {
@@ -75,9 +100,8 @@ export function Reveal({
   }, [])
 
   return (
-    // @ts-expect-error -- polymorphic tag with a shared ref type
     <Tag
-      ref={ref}
+      ref={setRef}
       className={`reveal ${shown ? 'is-in' : ''} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >

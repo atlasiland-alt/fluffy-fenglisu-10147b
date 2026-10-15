@@ -1,35 +1,44 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { ilanders } from '@/data/site'
-import { PageHeader, Pull, Reveal, SectionLabel, TickList } from '@/components/ui'
+import { getRosterOrder, rosterCopy } from '@/data/site'
+import {
+  IlanderLinks,
+  PageHeader,
+  Pull,
+  Reveal,
+  SectionLabel,
+  TickList,
+} from '@/components/ui'
 
 export const Route = createFileRoute('/ilanders')({
   component: IlandersPage,
   head: () => ({
     meta: [
-      { title: 'Meet the iLanders — iLands Store' },
+      { title: 'Meet the Ilanders — DeskWorkz' },
       {
         name: 'description',
         content:
-          'The iLanders are the workers behind the storefront. You do not choose one — work is routed according to the requirements of the request and the capabilities of the available workers.',
+          'Meet the Ilanders and see their established skills and services. You do not choose one; I personally review requests and assign the work.',
       },
     ],
   }),
 })
 
 function IlandersPage() {
+  const roster = getRosterOrder()
+
   return (
     <>
       <PageHeader
         index="05"
         kicker="Behind the storefront"
-        title="Meet the iLanders"
+        title="Meet the Ilanders"
         lead={
           <>
-            <p>The iLanders are the workers behind the storefront.</p>
+            <p>The Ilanders are the workers behind the storefront.</p>
             <p className="mt-4">
-              Customers do not need to choose an iLander. Work is routed
-              according to the actual requirements of the request and the
-              capabilities of the available workers.
+              Customers do not need to choose an Ilander. I personally review
+              each request and assign the work according to what it needs and the
+              Ilanders&rsquo; established skills.
             </p>
           </>
         }
@@ -38,28 +47,38 @@ function IlandersPage() {
       <section className="border-b-2 border-ink">
         <div className="mx-auto max-w-[1180px] px-5 py-20 lg:px-8 lg:py-28">
           <Reveal>
-            <SectionLabel index="Roster">Established capabilities</SectionLabel>
+            <SectionLabel index="Directory">
+              {rosterCopy.sectionLabel}
+            </SectionLabel>
+            <p className="mt-4 text-ink-2">
+              {rosterCopy.rotationNote}
+            </p>
           </Reveal>
 
           <ul className="mt-12 grid gap-8 lg:grid-cols-2">
-            {ilanders.map((ilander, i) => (
-              <Reveal as="li" key={ilander.name} delay={i * 80}>
+            {roster.map((ilander, i) => (
+              <Reveal as="li" key={ilander.displayName} delay={i * 80}>
                 <article className="card card-lift flex h-full flex-col p-7 lg:p-9">
                   <header className="flex items-start justify-between gap-4 border-b-2 border-ink pb-6">
                     <div>
-                      <p className="label text-ink-3">iLander</p>
+                      <p className="label text-archive">Ilander</p>
                       <h2 className="display mt-3 text-[clamp(2.5rem,7vw,3.75rem)]">
-                        {ilander.name}
+                        {ilander.displayName}
                       </h2>
+                      {i === 0 ? (
+                        <span className="stamp mt-3">
+                          {rosterCopy.leadingLabel}
+                        </span>
+                      ) : null}
                     </div>
-                    <Badge name={ilander.name} />
+                    <Badge name={ilander.displayName} />
                   </header>
 
-                  <p className="label mt-7 text-ink-3">Works on</p>
+                  <p className="label mt-7 text-ink-3">Skills &amp; services</p>
                   <div className="mt-4">
                     <TickList
-                      items={ilander.capabilities}
-                      columns={ilander.capabilities.length > 3 ? 2 : 1}
+                      items={ilander.skillsAndServices}
+                      columns={ilander.skillsAndServices.length > 3 ? 2 : 1}
                     />
                   </div>
 
@@ -81,6 +100,7 @@ function IlandersPage() {
                       </p>
                     </div>
                   ) : null}
+                  <IlanderLinks links={ilander.links} />
 
                   <p className="mt-auto pt-8 text-[0.9375rem] text-ink-3">
                     Only capabilities we&rsquo;ve established are listed here.
@@ -95,9 +115,9 @@ function IlandersPage() {
               <p className="label text-stamp">How we talk about the roster</p>
               <ul className="mt-5 space-y-3">
                 {[
-                  'iLanders are not interchangeable.',
-                  'We don’t claim capabilities an iLander hasn’t established.',
-                  'If a request needs something no available iLander can do, we tell you instead of guessing.',
+                  'Ilanders are not interchangeable.',
+                  'We don’t claim capabilities an Ilander hasn’t established.',
+                  'If a request needs something no available Ilander can do, we tell you instead of guessing.',
                 ].map((item) => (
                   <li key={item} className="flex gap-3 text-[0.9875rem] leading-snug">
                     <span aria-hidden className="font-mono text-stamp">
@@ -110,12 +130,11 @@ function IlandersPage() {
             </div>
 
             <div className="border-[1.5px] border-dashed border-archive bg-archive/5 p-7">
-              <p className="label text-archive">Routing</p>
+              <p className="label text-archive">Manual assignment</p>
               <p className="mt-5 text-ink-2">
-                When you approve a scope, the request is routed to the iLander
-                &mdash; or iLanders &mdash; whose established capabilities match
-                the work. A project that combines research, organization, and
-                media may involve more than one.
+                When you approve a scope, I review the request and assign the
+                work to Ilanders whose established skills fit. A project that combines research,
+                organization, and media may involve more than one.
               </p>
               <p className="mt-4 text-ink-2">
                 The completed work is then reviewed against the agreed scope
@@ -133,14 +152,14 @@ function IlandersPage() {
               You don&rsquo;t have to pick a worker.
             </h2>
             <div className="mt-8">
-              <Pull>You bring the problem. We figure out who should work on it.</Pull>
+              <Pull>You bring the problem. I review it and assign the work.</Pull>
             </div>
           </Reveal>
           <Reveal delay={90}>
             <div className="card p-7">
               <p className="text-lg text-ink-2">
                 Describe what you&rsquo;re trying to accomplish in your own
-                words. Routing is our job, not yours.
+                words. Choosing an Ilander is not your job.
               </p>
               <Link to="/request" className="btn mt-7 w-full justify-center">
                 Start a request

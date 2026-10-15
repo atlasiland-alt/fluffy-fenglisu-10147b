@@ -5,17 +5,17 @@ site. See `README.md` for what the product is and how to run it.
 
 ## Architecture
 
-TanStack Start (React 19) with file-based routing, built by Vite, deployed to
-Netlify. Every page is a static-feeling SSR page; the only server-side behaviour
-is Netlify Forms handling the request intake. There is no database, no auth, and
-no AI inference at runtime.
+TanStack Start (React 19) with file-based routing, built by Vite and deployed to
+Cloudflare Workers. Request intake is handled by `/api/request`, which sends
+validated submissions through Resend. There is no database, no auth, and no AI
+inference at runtime.
 
 ```
 src/
 ├── components/ui.tsx   # Shared primitives: Reveal, PageHeader, SectionLabel,
 │                       # Pull, TickList, Illustration, cdn()
 ├── data/site.ts        # ALL customer-facing copy: services, examples, steps,
-│                       # statuses, turnarounds, scope sections, iLanders
+│                       # statuses, turnarounds, scope sections, Ilanders
 ├── routes/
 │   ├── __root.tsx      # Document shell, fonts, header nav, footer, 404
 │   ├── index.tsx       # Home
@@ -24,10 +24,10 @@ src/
 │   ├── scope.tsx       # Scope contents + summary table
 │   ├── turnaround.tsx  # Turnaround bands
 │   ├── ilanders.tsx    # Roster + routing
-│   └── request.tsx     # Request form
-└── styles.css          # Design tokens and component classes
+│   ├── request.tsx   # Request form
+│   └── api/request.ts # Request intake endpoint
+└── styles.css        # Design tokens and component classes
 public/
-├── __forms.html        # Static skeleton so Netlify registers the form
 └── img/*.png           # Generated illustrations (full resolution originals)
 scripts/gen-images.mjs  # One-off illustration generation
 ```
@@ -39,8 +39,8 @@ This is a service that sells trust, so the copy has hard rules baked into it:
 - **Edit copy in `src/data/site.ts`, not in the route files.** Routes are layout;
   `site.ts` is the wording, kept in one reviewable place.
 - **Never invent a service, source, or capability.** The five services and the
-  iLander capability lists are the complete, established set. `ilanders` lists
-  only capabilities we have established; iLanders are not interchangeable, and
+  Ilander capability lists are the complete, established set. `ilanders` lists
+  only capabilities we have established; Ilanders are not interchangeable, and
   gaps are stated rather than filled.
 - **Keep the boundaries visible.** We do not enter buildings, do not trespass,
   do not promise access we do not have, do not claim photographs we did not
@@ -71,15 +71,11 @@ loaded from Google Fonts in `__root.tsx`.
 
 ## Non-obvious decisions
 
-- **`public/__forms.html` is load-bearing.** Netlify detects forms by scanning
-  static HTML at build time and cannot see React-rendered forms. The form posts
-  to `/__forms.html` — not `/`, which the SSR handler would intercept. Any new
-  field must be added to that skeleton as well as the React form, or Netlify
-  rejects the submission. `.netlify/features/netlify-forms` activates the
-  feature on deploy; leave it in place.
-- **Illustrations are always served through the Image CDN.** Use `Illustration`
-  or `cdn()` from `components/ui.tsx`; the originals in `public/img/` are ~2 MB
-  each and should never be referenced directly in markup.
+- **Request intake uses Resend.** Keep the `/api/request` endpoint and request
+  form payload aligned. Configure `RESEND_API_KEY`, `RESEND_TO`, and
+  `RESEND_FROM` in the Cloudflare Worker environment.
+- **Illustrations are served from `public/img/`.** Use `Illustration` or
+  `cdn()` from `components/ui.tsx`; those PNGs are the local source assets.
 - **`Reveal` hides content until it intersects.** A `<noscript>` style in
   `__root.tsx` forces `.reveal` visible when JavaScript is unavailable, so the
   copy is never lost.

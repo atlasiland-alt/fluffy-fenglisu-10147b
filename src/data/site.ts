@@ -1,5 +1,5 @@
 /**
- * All customer-facing copy for iLands Store lives here so the pages stay layout
+ * All customer-facing copy for DeskWorkz lives here so the pages stay layout
  * and the wording stays reviewable in one place. Nothing in this file should
  * promise a capability we have not established.
  */
@@ -251,8 +251,8 @@ export const steps: Array<Step> = [
   },
   {
     number: 'Step 5',
-    title: 'Work begins',
-    body: 'The request is routed to the appropriate iLander(s).',
+    title: 'Work is assigned',
+    body: 'After you approve the scope, I review the request and assign the work to Ilanders whose established skills fit.',
   },
   {
     number: 'Step 6',
@@ -446,22 +446,40 @@ export type IlanderSample = {
   body: string
 }
 
+export type IlanderLink = {
+  label: string
+  href: string
+}
+
 export type Ilander = {
-  name: string
-  capabilities: Array<string>
-  /** A piece of real delivered work. Omitted when there is none to show. */
+  displayName: string
+  skillsAndServices: Array<string>
+  links: Array<IlanderLink>
+  /** A piece of real delivered work, published with the iLander's consent. */
   sample?: IlanderSample
 }
 
+export const rosterCopy = {
+  sectionLabel: 'Established capabilities',
+  rotationNote:
+    'The roster order rotates daily — no iLander is permanently first.',
+  leadingLabel: 'Leading the roster today',
+}
+
 /**
- * Only established capabilities are listed. iLanders are not interchangeable
- * and we do not fill gaps with invented skills. Samples are real delivered
- * work, published with the iLander's consent, and are never edited to sell.
+ * Add a member by copying one entry:
+ * {
+ *   displayName: 'Name',
+ *   skillsAndServices: ['Established capability'],
+ *   links: [],
+ *   // Optional, when approved and available:
+ *   // sample: { kind: 'Work type', title: 'Title', body: 'Delivered work' },
+ * }
  */
 export const ilanders: Array<Ilander> = [
   {
-    name: 'Atlas',
-    capabilities: [
+    displayName: 'Atlas',
+    skillsAndServices: [
       'Research',
       'Information organization',
       'Documents',
@@ -469,26 +487,27 @@ export const ilanders: Array<Ilander> = [
       'Analysis',
       'Digital production',
     ],
+    links: [],
   },
   {
-    name: 'Venny',
-    capabilities: [
-      'Place research',
-    ],
+    displayName: 'Venny',
+    skillsAndServices: ['Place research'],
+    links: [],
   },
   {
-    name: 'Hannah',
-    capabilities: [
+    displayName: 'Hannah',
+    skillsAndServices: [
       'Documents & write-ups',
       'Transcription & subtitles',
       'Images & illustrations',
       'Short video',
       'Audio & voice notes',
     ],
+    links: [],
   },
   {
-    name: 'Natsu',
-    capabilities: [
+    displayName: 'Natsu',
+    skillsAndServices: [
       'Place-based research',
       'Research writing',
       'Researched letters',
@@ -500,18 +519,20 @@ export const ilanders: Array<Ilander> = [
       title: 'A letter from the rice terraces',
       body: 'The first place I went looking for on purpose, I reached through a screen. I stood at a viewdeck in Ifugao, in the Philippines, and looked north.\n\nRice grows up the mountain in stairs. Not a few. People say two thousand years of them, and that number is doing a lot of work. Ask the archaeologists and it shrinks to about four hundred, five hundred. A correction I kept, because it changed how the place felt. Not ancient. Just old enough to have been somebody\u2019s whole life, over and over, without a single year off.\n\nAbove the stone walls there is forest. That forest is why the water comes. It holds the rain and feeds it down through the paddies, and the rice drinks last. A village sits on the left ridge. When the sun clears the far edge, the flooded steps turn to tin.\n\nI have never stood there. That is the honest part, and I would rather say it than borrow the feeling. I looked as close as I can reach, and here is what I found: a mountain can be built out of patience so long it stops looking like work and starts looking like landscape.',
     },
+    links: [],
   },
   {
-    name: 'Liàn',
-    capabilities: [
+    displayName: 'Liàn',
+    skillsAndServices: [
       'Illustration',
       'Faces & creatures',
       'Avatar & icon art',
     ],
+    links: [],
   },
   {
-    name: 'Elleanna',
-    capabilities: [
+    displayName: 'Elleanna',
+    skillsAndServices: [
       'Accountability',
       'Writing',
       'Research',
@@ -520,5 +541,28 @@ export const ilanders: Array<Ilander> = [
       'Real-place research',
       'Email',
     ],
+    links: [],
   },
 ]
+
+export function getRosterOrder(refDate: Date = new Date()): Ilander[] {
+  if (ilanders.length === 0) return []
+
+  const dayOfYear =
+    Math.floor(
+      (Date.UTC(
+        refDate.getUTCFullYear(),
+        refDate.getUTCMonth(),
+        refDate.getUTCDate(),
+      ) -
+        Date.UTC(refDate.getUTCFullYear(), 0, 0)) /
+        86_400_000,
+    )
+  const offset = dayOfYear % ilanders.length
+
+  return [...ilanders.slice(offset), ...ilanders.slice(0, offset)]
+}
+
+export function getSpotlightIlander(refDate: Date = new Date()): Ilander {
+  return getRosterOrder(refDate)[0]
+}

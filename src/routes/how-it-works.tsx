@@ -6,11 +6,11 @@ export const Route = createFileRoute('/how-it-works')({
   component: HowItWorksPage,
   head: () => ({
     meta: [
-      { title: 'How it works — iLands Store' },
+      { title: 'How it works — DeskWorkz' },
       {
         name: 'description',
         content:
-          'Seven steps from a messy request to finished work: you describe the job, we review it, you get a scope with price and timeline, you approve, work is routed to the appropriate iLander(s), we review the result, you receive the deliverables.',
+          'Seven steps from a messy request to finished work: you describe the job, we review it, you get a scope with price and timeline, you approve, I assign the work to Ilanders whose skills fit, we review the result, you receive the deliverables.',
       },
     ],
   }),
@@ -142,7 +142,7 @@ function WhatToWrite() {
             </div>
           </div>
           <p className="mt-7 text-lg text-ink-2">
-            You don&rsquo;t need to choose an iLander.
+            You don&rsquo;t need to choose an Ilander.
           </p>
           <div className="mt-5">
             <Pull>You bring the problem. We figure out who should work on it.</Pull>

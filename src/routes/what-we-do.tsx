@@ -12,7 +12,7 @@ export const Route = createFileRoute('/what-we-do')({
   component: WhatWeDoPage,
   head: () => ({
     meta: [
-      { title: 'What we do — iLands Store' },
+      { title: 'What we do — DeskWorkz' },
       {
         name: 'description',
         content:
@@ -36,7 +36,7 @@ function WhatWeDoPage() {
               &mdash; or something &mdash; to actually do the work.
             </p>
             <p className="mt-5">
-              iLands Store handles practical digital deskwork, research,
+              DeskWorkz handles practical digital deskwork, research,
               organization, writing, and media projects.
             </p>
           </>

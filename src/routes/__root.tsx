@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 import '../styles.css'
 
-const siteName = 'iLands Store — Deskwork'
+const siteName = 'DeskWorkz — Get the deskwork done.'
 const siteDescription =
   'Research, digging, organizing, writing, finding things, building things. You bring us the task, we figure out the work behind it. No AI setup, no prompt engineering.'
 
@@ -20,10 +20,14 @@ export const Route = createRootRoute({
       { title: siteName },
       { name: 'description', content: siteDescription },
       { name: 'theme-color', content: '#f4efe6' },
-      { property: 'og:title', content: 'iLands Store — Get the deskwork done.' },
+      { property: 'og:site_name', content: 'DeskWorkz' },
+      { property: 'og:title', content: siteName },
       { property: 'og:description', content: siteDescription },
       { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://deskworkz.com' },
       { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: siteName },
+      { name: 'twitter:description', content: siteDescription },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -43,7 +47,7 @@ const NAV = [
   { to: '/how-it-works', label: 'How it works' },
   { to: '/scope', label: 'Scope' },
   { to: '/turnaround', label: 'Turnaround' },
-  { to: '/ilanders', label: 'iLanders' },
+  { to: '/ilanders', label: 'Ilanders' },
 ] as const
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -79,7 +83,7 @@ function SiteHeader() {
           <Mark />
           <span className="leading-none">
             <span className="headline block text-[1.0625rem] tracking-tight">
-              iLands Store
+              DeskWorkz
             </span>
             <span className="label mt-1 block text-ink-3 group-hover:text-stamp">
               Deskwork
@@ -215,7 +219,7 @@ function SiteFooter() {
         </div>
 
         <div className="mt-14 flex flex-col gap-2 border-t border-paper/25 pt-6 text-paper/60 sm:flex-row sm:items-center sm:justify-between">
-          <p className="label">iLands Store &mdash; Deskwork</p>
+          <p className="label">DeskWorkz &mdash; Deskwork</p>
           <p className="label">
             Illustrations on this site are generated. Not photographs.
           </p>

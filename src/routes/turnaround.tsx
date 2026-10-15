@@ -6,7 +6,7 @@ export const Route = createFileRoute('/turnaround')({
   component: TurnaroundPage,
   head: () => ({
     meta: [
-      { title: 'How long will my request take? — iLands Store' },
+      { title: 'How long will my request take? — DeskWorkz' },
       {
         name: 'description',
         content:

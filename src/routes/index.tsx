@@ -1,12 +1,25 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { examples, ilanders, services, statuses } from '@/data/site'
-import { Illustration, Pull, Reveal, SectionLabel, TickList } from '@/components/ui'
+import {
+  examples,
+  getRosterOrder,
+  services,
+  statuses,
+} from '@/data/site'
+import {
+  cdn,
+  IlanderLinks,
+  Illustration,
+  Pull,
+  Reveal,
+  SectionLabel,
+  TickList,
+} from '@/components/ui'
 
 export const Route = createFileRoute('/')({
   component: Home,
   head: () => ({
     meta: [
-      { title: 'iLands Store — Get the deskwork done.' },
+      { title: 'DeskWorkz — Get the deskwork done.' },
       {
         name: 'description',
         content:
@@ -52,7 +65,7 @@ function Hero() {
       <div className="relative mx-auto grid max-w-[1180px] gap-14 px-5 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-16 lg:px-8 lg:py-24">
         <div>
           <div className="rise">
-            <SectionLabel index="Front desk">iLands Store &mdash; Deskwork</SectionLabel>
+            <SectionLabel index="Front desk">DeskWorkz &mdash; Deskwork</SectionLabel>
           </div>
 
           <h1
@@ -114,8 +127,8 @@ function Hero() {
         <div className="rise relative lg:pt-6" style={{ animationDelay: '240ms' }}>
           <div className="taped relative rotate-[-1.4deg]">
             <img
-              src="/.netlify/images?url=%2Fimg%2Fdesk-overhead.png&w=900&fm=webp"
-              srcSet="/.netlify/images?url=%2Fimg%2Fdesk-overhead.png&w=640&fm=webp 640w, /.netlify/images?url=%2Fimg%2Fdesk-overhead.png&w=900&fm=webp 900w, /.netlify/images?url=%2Fimg%2Fdesk-overhead.png&w=1400&fm=webp 1400w"
+              src={cdn('/img/desk-overhead.png', 900)}
+              srcSet={`${cdn('/img/desk-overhead.png', 640)} 640w, ${cdn('/img/desk-overhead.png', 900)} 900w, ${cdn('/img/desk-overhead.png', 1400)} 1400w`}
               sizes="(max-width: 1024px) 100vw, 520px"
               alt="Illustration of a research desk mid-project: manila folders, stamped documents, a folded plat map, photo prints, index cards, a magnifying glass and a coffee mug"
               className="block w-full border-[1.5px] border-ink bg-paper-2 shadow-[6px_8px_0_0_rgba(29,26,21,0.85)]"
@@ -184,7 +197,7 @@ function WhatWeDo() {
               &mdash; or something &mdash; to actually do the work.
             </p>
             <p className="mt-5 max-w-[56ch] text-lg text-ink-2">
-              iLands Store handles practical digital deskwork, research,
+              DeskWorkz handles practical digital deskwork, research,
               organization, writing, and media projects.
             </p>
           </Reveal>
@@ -373,6 +386,8 @@ function ProcessStrip() {
 }
 
 function IlandersStrip() {
+  const roster = getRosterOrder()
+
   return (
     <section className="border-b-2 border-ink bg-paper-2">
       <div className="mx-auto max-w-[1180px] px-5 py-20 lg:px-8 lg:py-28">
@@ -380,31 +395,35 @@ function IlandersStrip() {
           <Reveal>
             <SectionLabel index="04">Behind the storefront</SectionLabel>
             <h2 className="display mt-6 text-[clamp(2.25rem,6vw,3.5rem)]">
-              Meet the iLanders
+              Meet the Ilanders
             </h2>
             <p className="mt-6 max-w-[48ch] text-lg text-ink-2">
-              The iLanders are the workers behind the storefront. You do not need
-              to choose one. Work is routed according to the actual requirements
-              of the request and the capabilities of the available workers.
+              You do not need to choose an Ilander. I personally review each
+              request and assign work according to what it needs and the
+              Ilanders&rsquo; established skills.
             </p>
             <div className="mt-8">
-              <Pull>You bring the problem. We figure out who should work on it.</Pull>
+              <Pull>You bring the problem. I review it and assign the work.</Pull>
             </div>
             <Link to="/ilanders" className="btn mt-8">
-              Meet the iLanders
+              View the full directory
             </Link>
           </Reveal>
 
           <Reveal delay={90} className="space-y-6">
-            {ilanders.map((ilander) => (
-              <div key={ilander.name} className="card card-lift p-6">
-                <p className="display text-[2rem]">{ilander.name}</p>
+            {roster.map((ilander) => (
+              <div key={ilander.displayName} className="card card-lift p-6">
+                <p className="display text-[2rem]">{ilander.displayName}</p>
                 <p className="label mt-3 border-t border-dotted border-ink-3/60 pt-4 text-ink-3">
-                  Established capabilities
+                  Skills &amp; services
                 </p>
                 <div className="mt-3">
-                  <TickList items={ilander.capabilities} columns={ilander.capabilities.length > 3 ? 2 : 1} />
+                  <TickList
+                    items={ilander.skillsAndServices}
+                    columns={ilander.skillsAndServices.length > 3 ? 2 : 1}
+                  />
                 </div>
+                <IlanderLinks links={ilander.links} />
               </div>
             ))}
           </Reveal>
