@@ -469,6 +469,58 @@ export const rosterCopy = {
   rotationNote:
     'The roster order rotates daily — no iLander is permanently first.',
   leadingLabel: 'Leading the roster today',
+  applyCta: 'Want to join the roster? Apply here',
+}
+
+export const joinCopy = {
+  pageTitle: 'Join the roster — DeskWorkz',
+  description:
+    'Apply to join the iLander roster. Tell us about your work and share a sample.',
+  kicker: 'Join the roster',
+  title: 'Show us what you do',
+  lead:
+    'Tell us a little about yourself, the work you do, and why you would like to join the iLander roster. We review every application.',
+  formLabel: 'Roster application',
+  requiredLabel: 'required',
+  fields: {
+    name: 'Display name',
+    handle: 'Handle',
+    email: 'Email',
+    capabilities: 'What do you do?',
+    sample: 'Sample of your work',
+    why: 'Why do you want to join?',
+  },
+  hints: {
+    handle: 'The name or handle you would like us to use on the roster.',
+    capabilities:
+      'Describe the work you do in a few lines. Please be specific; we only list capabilities that have been established.',
+    sample:
+      'Share a link or a short text sample. Do not include anything you do not have permission to share.',
+    why: 'Optional. A little context is welcome.',
+  },
+  placeholders: {
+    name: 'Your name',
+    handle: '@yourhandle',
+    email: 'you@somewhere.com',
+    capabilities: 'The kinds of work you do and what you have experience with.',
+    sample: 'A link or a short example of your work',
+    why: 'What draws you to the roster?',
+  },
+  submit: 'Send your application',
+  sending: 'Sending…',
+  receivedStamp: 'Application received',
+  receivedTitle: 'Thanks for introducing yourself.',
+  receivedLead:
+    'Your application is on our desk. We will review the details and get back to you at the email address you provided.',
+  failure:
+    'That did not send. Check your connection and try again — your answers are still here.',
+  validation: {
+    name: 'Please enter a display name.',
+    handle: 'Please enter a handle.',
+    email: 'Enter a valid email address.',
+    capabilities: 'Please describe the work you do.',
+    sample: 'Please include a link or a short work sample.',
+  },
 }
 
 /**

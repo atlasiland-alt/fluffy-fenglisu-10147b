@@ -3,6 +3,7 @@ import {
   examples,
   getRosterOrder,
   getWeeklySpotlight,
+  rosterCopy,
   services,
   statuses,
 } from '@/data/site'
@@ -442,6 +443,9 @@ function IlandersStrip({ refDate }: { refDate: Date }) {
             </div>
             <Link to="/ilanders" className="btn mt-8">
               View the full directory
+            </Link>
+            <Link to="/join" className="btn btn-ghost mt-8">
+              {rosterCopy.applyCta}
             </Link>
           </Reveal>
 

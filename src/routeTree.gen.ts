@@ -13,10 +13,12 @@ import { Route as WhatWeDoRouteImport } from './routes/what-we-do'
 import { Route as TurnaroundRouteImport } from './routes/turnaround'
 import { Route as ScopeRouteImport } from './routes/scope'
 import { Route as RequestRouteImport } from './routes/request'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as IlandersRouteImport } from './routes/ilanders'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiRequestRouteImport } from './routes/api/request'
+import { Route as ApiApplyRouteImport } from './routes/api/apply'
 
 const WhatWeDoRoute = WhatWeDoRouteImport.update({
   id: '/what-we-do',
@@ -36,6 +38,11 @@ const ScopeRoute = ScopeRouteImport.update({
 const RequestRoute = RequestRouteImport.update({
   id: '/request',
   path: '/request',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IlandersRoute = IlandersRouteImport.update({
@@ -58,25 +65,34 @@ const ApiRequestRoute = ApiRequestRouteImport.update({
   path: '/api/request',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiApplyRoute = ApiApplyRouteImport.update({
+  id: '/api/apply',
+  path: '/api/apply',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/how-it-works': typeof HowItWorksRoute
   '/ilanders': typeof IlandersRoute
+  '/join': typeof JoinRoute
   '/request': typeof RequestRoute
   '/scope': typeof ScopeRoute
   '/turnaround': typeof TurnaroundRoute
   '/what-we-do': typeof WhatWeDoRoute
+  '/api/apply': typeof ApiApplyRoute
   '/api/request': typeof ApiRequestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/how-it-works': typeof HowItWorksRoute
   '/ilanders': typeof IlandersRoute
+  '/join': typeof JoinRoute
   '/request': typeof RequestRoute
   '/scope': typeof ScopeRoute
   '/turnaround': typeof TurnaroundRoute
   '/what-we-do': typeof WhatWeDoRoute
+  '/api/apply': typeof ApiApplyRoute
   '/api/request': typeof ApiRequestRoute
 }
 export interface FileRoutesById {
@@ -84,10 +100,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/how-it-works': typeof HowItWorksRoute
   '/ilanders': typeof IlandersRoute
+  '/join': typeof JoinRoute
   '/request': typeof RequestRoute
   '/scope': typeof ScopeRoute
   '/turnaround': typeof TurnaroundRoute
   '/what-we-do': typeof WhatWeDoRoute
+  '/api/apply': typeof ApiApplyRoute
   '/api/request': typeof ApiRequestRoute
 }
 export interface FileRouteTypes {
@@ -96,30 +114,36 @@ export interface FileRouteTypes {
     | '/'
     | '/how-it-works'
     | '/ilanders'
+    | '/join'
     | '/request'
     | '/scope'
     | '/turnaround'
     | '/what-we-do'
+    | '/api/apply'
     | '/api/request'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/how-it-works'
     | '/ilanders'
+    | '/join'
     | '/request'
     | '/scope'
     | '/turnaround'
     | '/what-we-do'
+    | '/api/apply'
     | '/api/request'
   id:
     | '__root__'
     | '/'
     | '/how-it-works'
     | '/ilanders'
+    | '/join'
     | '/request'
     | '/scope'
     | '/turnaround'
     | '/what-we-do'
+    | '/api/apply'
     | '/api/request'
   fileRoutesById: FileRoutesById
 }
@@ -127,10 +151,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HowItWorksRoute: typeof HowItWorksRoute
   IlandersRoute: typeof IlandersRoute
+  JoinRoute: typeof JoinRoute
   RequestRoute: typeof RequestRoute
   ScopeRoute: typeof ScopeRoute
   TurnaroundRoute: typeof TurnaroundRoute
   WhatWeDoRoute: typeof WhatWeDoRoute
+  ApiApplyRoute: typeof ApiApplyRoute
   ApiRequestRoute: typeof ApiRequestRoute
 }
 
@@ -164,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RequestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ilanders': {
       id: '/ilanders'
       path: '/ilanders'
@@ -192,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/apply': {
+      id: '/api/apply'
+      path: '/api/apply'
+      fullPath: '/api/apply'
+      preLoaderRoute: typeof ApiApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -199,10 +239,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HowItWorksRoute: HowItWorksRoute,
   IlandersRoute: IlandersRoute,
+  JoinRoute: JoinRoute,
   RequestRoute: RequestRoute,
   ScopeRoute: ScopeRoute,
   TurnaroundRoute: TurnaroundRoute,
   WhatWeDoRoute: WhatWeDoRoute,
+  ApiApplyRoute: ApiApplyRoute,
   ApiRequestRoute: ApiRequestRoute,
 }
 export const routeTree = rootRouteImport

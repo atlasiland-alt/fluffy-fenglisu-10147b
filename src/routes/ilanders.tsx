@@ -173,6 +173,12 @@ function IlandersPage() {
               <Link to="/request" className="btn mt-7 w-full justify-center">
                 Start a request
               </Link>
+              <Link
+                to="/join"
+                className="btn btn-ghost mt-4 w-full justify-center"
+              >
+                {rosterCopy.applyCta}
+              </Link>
             </div>
           </Reveal>
         </div>
