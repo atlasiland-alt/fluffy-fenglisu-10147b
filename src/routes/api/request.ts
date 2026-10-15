@@ -15,6 +15,15 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+function runtimeEnv(name: string): string | undefined {
+  const cloudflareEnv = (globalThis as Record<string, unknown>).__CF_ENV__
+  if (isRecord(cloudflareEnv) && typeof cloudflareEnv[name] === 'string') {
+    return cloudflareEnv[name]
+  }
+
+  return process.env[name]
+}
+
 function isRequestPayload(value: unknown): value is RequestPayload {
   if (!isRecord(value)) return false
 
@@ -67,9 +76,9 @@ export const Route = createFileRoute('/api/request')({
           return Response.json({ ok: false }, { status: 400 })
         }
 
-        const apiKey = process.env.RESEND_API_KEY
-        const recipient = process.env.RESEND_TO
-        const sender = process.env.RESEND_FROM
+        const apiKey = runtimeEnv('RESEND_API_KEY')
+        const recipient = runtimeEnv('RESEND_TO')
+        const sender = runtimeEnv('RESEND_FROM')
         if (!apiKey || !recipient || !sender) {
           return Response.json(
             { ok: false, error: 'unconfigured' },
