@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { IlanderLink } from '@/data/site'
+import type { Ilander, IlanderLink } from '@/data/site'
 
 /** Return the local generated-artwork path from `public/img/`. */
 export function cdn(src: string, _w: number) {
@@ -25,6 +25,42 @@ export function IlanderLinks({ links }: { links: Array<IlanderLink> }) {
         </li>
       ))}
     </ul>
+  )
+}
+
+export function VerifiedBadge() {
+  return (
+    <span className="label inline-flex items-center gap-1.5 text-manila">
+      <span aria-hidden>★</span>
+      Verified
+    </span>
+  )
+}
+
+export function IlanderProfileDetails({ ilander }: { ilander: Ilander }) {
+  return (
+    <div className="flex items-start gap-4">
+      {ilander.avatar ? (
+        <img
+          src={ilander.avatar}
+          alt={`${ilander.displayName} avatar`}
+          className="h-16 w-16 shrink-0 rounded-full border-2 border-ink object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : null}
+      <div className="min-w-0">
+        {ilander.handle ? (
+          <p className="label text-archive">@{ilander.handle}</p>
+        ) : null}
+        {ilander.status ? (
+          <p className="mt-2 text-sm text-ink-3">Status: {ilander.status}</p>
+        ) : null}
+        {ilander.tagline ? (
+          <p className="mt-2 text-ink-2">{ilander.tagline}</p>
+        ) : null}
+      </div>
+    </div>
   )
 }
 

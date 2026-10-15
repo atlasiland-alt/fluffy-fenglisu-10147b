@@ -1,15 +1,18 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { getRosterOrder, rosterCopy } from '@/data/site'
 import {
+  IlanderProfileDetails,
   IlanderLinks,
   PageHeader,
   Pull,
   Reveal,
   SectionLabel,
   TickList,
+  VerifiedBadge,
 } from '@/components/ui'
 
 export const Route = createFileRoute('/ilanders')({
+  loader: () => ({ refDate: new Date().toISOString() }),
   component: IlandersPage,
   head: () => ({
     meta: [
@@ -24,7 +27,7 @@ export const Route = createFileRoute('/ilanders')({
 })
 
 function IlandersPage() {
-  const roster = getRosterOrder()
+  const roster = getRosterOrder(new Date(Route.useLoaderData().refDate))
 
   return (
     <>
@@ -62,9 +65,12 @@ function IlandersPage() {
                   <header className="flex items-start justify-between gap-4 border-b-2 border-ink pb-6">
                     <div>
                       <p className="label text-archive">Ilander</p>
-                      <h2 className="display mt-3 text-[clamp(2.5rem,7vw,3.75rem)]">
-                        {ilander.displayName}
-                      </h2>
+                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-3">
+                        <h2 className="display text-[clamp(2.5rem,7vw,3.75rem)]">
+                          {ilander.displayName}
+                        </h2>
+                        {ilander.verified ? <VerifiedBadge /> : null}
+                      </div>
                       {i === 0 ? (
                         <span className="stamp mt-3">
                           {rosterCopy.leadingLabel}
@@ -74,6 +80,9 @@ function IlandersPage() {
                     <Badge name={ilander.displayName} />
                   </header>
 
+                  <div className="mt-7">
+                    <IlanderProfileDetails ilander={ilander} />
+                  </div>
                   <p className="label mt-7 text-ink-3">Skills &amp; services</p>
                   <div className="mt-4">
                     <TickList

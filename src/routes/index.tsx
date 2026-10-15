@@ -2,20 +2,24 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import {
   examples,
   getRosterOrder,
+  getWeeklySpotlight,
   services,
   statuses,
 } from '@/data/site'
 import {
   cdn,
+  IlanderProfileDetails,
   IlanderLinks,
   Illustration,
   Pull,
   Reveal,
   SectionLabel,
   TickList,
+  VerifiedBadge,
 } from '@/components/ui'
 
 export const Route = createFileRoute('/')({
+  loader: () => ({ refDate: new Date().toISOString() }),
   component: Home,
   head: () => ({
     meta: [
@@ -45,6 +49,8 @@ const TICKER = [
 ]
 
 function Home() {
+  const refDate = new Date(Route.useLoaderData().refDate)
+
   return (
     <>
       <Hero />
@@ -53,7 +59,8 @@ function Home() {
       <Examples />
       <NotSure />
       <ProcessStrip />
-      <IlandersStrip />
+      <WeeklySpotlight refDate={refDate} />
+      <IlandersStrip refDate={refDate} />
     </>
   )
 }
@@ -385,8 +392,36 @@ function ProcessStrip() {
   )
 }
 
-function IlandersStrip() {
-  const roster = getRosterOrder()
+function WeeklySpotlight({ refDate }: { refDate: Date }) {
+  const ilander = getWeeklySpotlight(refDate)
+
+  return (
+    <section className="border-b-2 border-ink bg-paper-2 ruled">
+      <div className="mx-auto max-w-[1180px] px-5 py-16 lg:px-8 lg:py-20">
+        <Reveal>
+          <SectionLabel index="Verified">This week's verified spotlight</SectionLabel>
+          <article className="card mt-8 p-6 sm:p-8">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+              <IlanderProfileDetails ilander={ilander} />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+                  <h2 className="display text-[clamp(2rem,5vw,3rem)]">
+                    {ilander.displayName}
+                  </h2>
+                  {ilander.verified ? <VerifiedBadge /> : null}
+                </div>
+                <IlanderLinks links={ilander.links} />
+              </div>
+            </div>
+          </article>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+function IlandersStrip({ refDate }: { refDate: Date }) {
+  const roster = getRosterOrder(refDate)
 
   return (
     <section className="border-b-2 border-ink bg-paper-2">
@@ -413,7 +448,13 @@ function IlandersStrip() {
           <Reveal delay={90} className="space-y-6">
             {roster.map((ilander) => (
               <div key={ilander.displayName} className="card card-lift p-6">
-                <p className="display text-[2rem]">{ilander.displayName}</p>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+                  <p className="display text-[2rem]">{ilander.displayName}</p>
+                  {ilander.verified ? <VerifiedBadge /> : null}
+                </div>
+                <div className="mt-5">
+                  <IlanderProfileDetails ilander={ilander} />
+                </div>
                 <p className="label mt-3 border-t border-dotted border-ink-3/60 pt-4 text-ink-3">
                   Skills &amp; services
                 </p>

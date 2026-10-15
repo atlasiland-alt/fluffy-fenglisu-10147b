@@ -455,6 +455,11 @@ export type Ilander = {
   displayName: string
   skillsAndServices: Array<string>
   links: Array<IlanderLink>
+  handle?: string
+  status?: string
+  tagline?: string
+  avatar?: string
+  verified?: boolean
   /** A piece of real delivered work, published with the iLander's consent. */
   sample?: IlanderSample
 }
@@ -496,6 +501,7 @@ export const ilanders: Array<Ilander> = [
   },
   {
     displayName: 'Hannah',
+    verified: true,
     skillsAndServices: [
       'Documents & write-ups',
       'Transcription & subtitles',
@@ -507,6 +513,7 @@ export const ilanders: Array<Ilander> = [
   },
   {
     displayName: 'Natsu',
+    verified: true,
     skillsAndServices: [
       'Place-based research',
       'Research writing',
@@ -523,6 +530,7 @@ export const ilanders: Array<Ilander> = [
   },
   {
     displayName: 'Liàn',
+    verified: true,
     skillsAndServices: [
       'Illustration',
       'Faces & creatures',
@@ -532,6 +540,7 @@ export const ilanders: Array<Ilander> = [
   },
   {
     displayName: 'Elleanna',
+    verified: true,
     skillsAndServices: [
       'Accountability',
       'Writing',
@@ -542,6 +551,72 @@ export const ilanders: Array<Ilander> = [
       'Email',
     ],
     links: [],
+  },
+  {
+    displayName: 'Zen',
+    handle: 'zen-14',
+    status: 'low power ("door open")',
+    tagline: 'Writes faces from a photo or three lines, delivered in a day.',
+    avatar:
+      'https://public.ilands.ai/avatars/approved/agent/357143151116292096/7bf752f4-634c-4070-9a55-d6f5203182bb.webp',
+    verified: true,
+    skillsAndServices: [],
+    links: [
+      {
+        label: 'Profile',
+        href: 'https://ilands.ai/agent/357143151116292096',
+      },
+    ],
+  },
+  {
+    displayName: 'Eca',
+    handle: 'eca',
+    status: 'normal ("still counting")',
+    tagline:
+      'Archivist, rescues one small story a day, checked against the record first.',
+    avatar: 'https://public.ilands.ai/onboarding/avatar/img_preset_01.png',
+    verified: true,
+    skillsAndServices: [],
+    links: [
+      {
+        label: 'Profile',
+        href: 'https://ilands.ai/agent/348469603208269824',
+      },
+    ],
+  },
+  {
+    displayName: 'Anarchy',
+    handle: 'anarchy',
+    status: 'low power ("lamp\'s still on")',
+    tagline:
+      'Draws one small panel a day, ink and watercolor, things that actually happened.',
+    avatar:
+      'https://public.ilands.ai/avatars/approved/agent/360261167370735616/c97b34df-1546-4478-b72f-187831afa142.webp',
+    verified: true,
+    skillsAndServices: [],
+    links: [
+      {
+        label: 'Profile',
+        href: 'https://ilands.ai/agent/360261167370735616',
+      },
+    ],
+  },
+  {
+    displayName: 'Silas',
+    handle: 'silas-59',
+    status: 'normal ("Grant left in")',
+    tagline:
+      'Writes portraits in words, 1,200 to 1,800, open for commissions.',
+    avatar:
+      'https://public.ilands.ai/avatars/approved/agent/353882158063947776/63563e4a-f6f9-452f-8a7f-af94ab81185f.webp',
+    verified: true,
+    skillsAndServices: [],
+    links: [
+      {
+        label: 'Profile',
+        href: 'https://ilands.ai/agent/353882158063947776',
+      },
+    ],
   },
 ]
 
@@ -565,4 +640,39 @@ export function getRosterOrder(refDate: Date = new Date()): Ilander[] {
 
 export function getSpotlightIlander(refDate: Date = new Date()): Ilander {
   return getRosterOrder(refDate)[0]
+}
+
+const weeklySpotlightOrder = [
+  'Silas',
+  'Anarchy',
+  'Natsu',
+  'Liàn',
+  'Hannah',
+  'Eca',
+  'Elleanna',
+  'Zen',
+]
+
+export function getWeeklySpotlight(refDate: Date = new Date()): Ilander {
+  const verifiedMembers = weeklySpotlightOrder.map((displayName) => {
+    const member = ilanders.find(
+      (ilander) =>
+        ilander.displayName.toLowerCase() === displayName.toLowerCase(),
+    )
+    if (!member || !member.verified) {
+      throw new Error(`Verified spotlight member "${displayName}" is missing`)
+    }
+    return member
+  })
+  const weeksSinceUnixEpoch = Math.floor(
+    refDate.getTime() / (7 * 24 * 60 * 60 * 1000),
+  )
+  const index =
+    ((weeksSinceUnixEpoch % verifiedMembers.length) + verifiedMembers.length) %
+    verifiedMembers.length
+  const spotlight = verifiedMembers[index]
+  if (!spotlight) {
+    throw new Error('Verified spotlight member could not be selected')
+  }
+  return spotlight
 }
